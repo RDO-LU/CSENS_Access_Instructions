@@ -326,23 +326,27 @@ When an nf-core pipeline is initiated, singularity images are pulled at runtime 
 
 ## Getting an nf-core pipeline
 
+Read the nf-core docs, but to download a pipeline you need to install `nf-core` and then use `nf-core tools download` to begin the process of downloading a pipeline. You will need to download the singularity images when the option comes up. To make the pipelines available for all your project members, a good place to put them would be the shared area, for example `/scale/grXX/shared/nf-core/`. When you download pipelines, make a folder called `singularity_cache` where the images are downloaded to. Use "copy" when the choice of "copy/amend" comes up during download process.
+
 ### Setting up to use nf-core
 
-There are several commonly used piplines located at `/scale/gr01/shared/nf-core`, and to use them you need to add a few lines into a file called `.bash_profile`.
+To use them, you need to add a few lines into a file called `.bash_profile` which is in your home folder.
 
 1) Open the file using `gedit ~/.bash_profile`
 
-2) Add copy/paste these lines in at the end and save the file:
+2) Add these lines at the end, and then save the file:
 
 ```
 export NXF_OFFLINE='true'
 export SINGULARITY_TMPDIR=$SNIC_TMP
-export NXF_SINGULARITY_LIBRARYDIR=/scale/gr01/shared/nf-core/singularity_cache
+export NXF_SINGULARITY_LIBRARYDIR=/scale/grXX/shared/nf-core/singularity_cache
 export NXF_SINGULARITY_CACHEDIR="$NXF_SINGULARITY_LIBRARYDIR"
 export SINGULARITY_CACHEDIR="$NXF_SINGULARITY_LIBRARYDIR"
-export NXF_HOME=/scale/gr01/shared/nf-core/nextflow_sub/
+export NXF_HOME=/scale/grXX/shared/nf-core/nextflow_sub/
 export NXF_SINGULARITY_HOME_MOUNT=true
 ```
+
+**Make sure you change the paths/name according to your project.**
 
 **You should then logout of COSMOS-SENS and log back in so these changes take effect**. These lines set the environment variables that
 
@@ -351,9 +355,9 @@ export NXF_SINGULARITY_HOME_MOUNT=true
 
 2) Set the temp dir to the ones located on the nodes (`$SNIC_TMP`).
 
-3) Binds the sigularity images to `/scale` so they can be found system wide.
+3) Binds the singularity images to `/scale` so they can be found system wide.
 
-4) Sets the `home` of Nextflow to the central copy on shared (`/scale/gr01/shared/nf-core/nextflow_sub/`). This means each user doesn't need their own.
+4) Sets the `home` of Nextflow to the central copy on shared (`/scale/grXX/shared/nf-core/nextflow_sub/`). This means each user doesn't need their own.
 
 When running a job, use the config file located here:
 
@@ -379,10 +383,10 @@ and a script `NFC_RNAseq.sh` running the basic rnaseq pipline would look like th
 ```shell
 module load Nextflow/24.10.0
 
-nextflow run /scale/gr01/shared/nf-core/nf-core-rnaseq_3.17.0/3_17_0/main.nf \
+nextflow run /scale/grXX/shared/nf-core/nf-core-rnaseq_3.17.0/3_17_0/main.nf \
 -profile singularity \
 --input samplesheet.csv \
--c /scale/gr01/shared/nf-core/cosmos_sens_grp1_NFv24.config \
+-c /scale/grXX/shared/nf-core/cosmos_sens_grp1_NFv24.config \
 --genome GRCm38 \
 --igenomes_base  /scale/references/AWS-iGenomes/ \
 --outdir /home/<userid>/RNAseq_project/NFC_out
@@ -448,39 +452,6 @@ nextflow run /scale/gr01/shared/nf-core/nf-core-rnaseq_3.17.0/3_17_0/main.nf \
 
 This will run the entire pipeline on a single node.
 
-## IGV
-Integrative Genomics Viewer (IGV) is a nice tool to visualise BAM/bigwig files. This is available to use on COSMOS-SENS, but it should not be used on the front-end as it will slow the system down for others. Instead you should login to a node interactively and use it from there.
-
-Open a terminal and do the following. It will take a moment to find a free node. `-t 60` means a 60 min session
-
-```shell
-interactive -N 1 --ntasks-per-node=4 -t 60
-```
-
-When you have logged into a node, your prompt will change to something like:
-
-```
-<userid>@snXX
-```
-where snXX will denote which node you have logged into.
-
-Load the module:
-```shell
-module load IGV/2.18.4-Java-17
-```
-You will see this:
-
-```
-WARNING!! Not suitable to be exectuted on COSMOS-SENS front-ends.
-```
-**You can ignore this**. You are logged into a node because you were smart enough to read these instructions first. Well done you.
-
-Then invoke IGV:
-```shell
-igv.sh
-```
-
-A normal IGV session will open which you use as normal.
 
 ## Apptainer (Singularity) containers
 

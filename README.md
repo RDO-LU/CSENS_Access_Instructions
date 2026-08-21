@@ -1,5 +1,5 @@
-# COSMOS-SENS genral access documention.
-This document describes the process of getting access to COSMOS-SENS at LUNARC.
+# COSMOS-SENS access documentation.
+This document describes a generalised process for getting access to COSMOS-SENS at LUNARC.
 
 
 The documentation is created by using the python package MkDocs.

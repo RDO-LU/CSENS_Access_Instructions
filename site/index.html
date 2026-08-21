@@ -100,6 +100,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#cosmos-sens-and-bioinformatics">COSMOS-SENS and bioinformatics</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#nf-core">nf-core</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#getting-an-nf-core-pipeline">Getting an nf-core pipeline</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#setting-up-to-use-nf-core">Setting up to use nf-core</a>
     </li>
@@ -116,8 +118,6 @@
     <li class="toctree-l3"><a class="reference internal" href="#if-you-have-many-small-fastq-files">If you have many small fastq files</a>
     </li>
         </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#igv">IGV</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#apptainer-singularity-containers">Apptainer (Singularity) containers</a>
         <ul>
@@ -154,7 +154,7 @@
                 <h1 id="instructions-for-researchers-wanting-access-to-cosmos-sens-at-lunarc">Instructions for researchers wanting access to COSMOS-SENS at LUNARC.</h1>
 <p>In order to keep the system orderly we have set out some guidelines which everyone should follow to maintain a smoothly running platform. Please read this document <em>carefully</em> before you use the system.</p>
 <h2 id="what-is-cosmos-sens">What is COSMOS-SENS?</h2>
-<p>The GDPR is an EU directive that protects the peronal information and data of individuals, therefore any identifying data from living subjects has to be kept securely under these rules. COSMOS-SENS is a isolated HPC platform housed at LUNARC where we handle and analyse data of a sensitive nature under GDPR rules. This also covers data which is sensitive for national security. <strong><em>This means COSMOS-SENS does not have a connection to the internet</em></strong>, and transfering data to/from COSMOS-SENS is done via sftp (more later).</p>
+<p>The GDPR is an EU directive that protects the personal information and data of individuals, therefore any identifying data from living subjects has to be kept securely under these rules. COSMOS-SENS is a isolated HPC platform housed at LUNARC where we handle and analyse data of a sensitive nature under GDPR rules. This also covers data which is sensitive for national security. <strong><em>This means COSMOS-SENS does not have a connection to the internet</em></strong>, and transferring data to/from COSMOS-SENS is done via sftp (more later).</p>
 <h2 id="who-is-cosmos-sens-for">Who is COSMOS-SENS for?</h2>
 <p>Before requesting an account, you should be comfortable using a LINUX based high-performance computing (HPC) platform.</p>
 <div class="admonition note inline end">
@@ -181,7 +181,7 @@
 <h3 id="2-log-back-in-to-supr-and-apply-for-an-account-at-lunarc">2) Log back in to SUPR and apply for an account at LUNARC.</h3>
 <p>Left menu under "Accounts". Fill out the details correctly and use your mobile number. This will be needed for 2-factor authentication.</p>
 <h3 id="3-request-a-static-ip-address-this-is-important-do-this-straight-after-step-2">3) Request a Static IP address (<strong>This is important, do this straight after step 2</strong>)</h3>
-<p>As a further layer of security we employ IP address filtering to make sure only authorised users can establish a connection to COSMOS-SENS. While your LUNARC account is being created, contact LDC (servicedesk@lu.se) and request a VPN with a static IP address. When you recieve your IP address, ask the project leader to raise a support ticket (support@lunarc.lu.se) with LUNARC stating what the IP address is, and who it is for. If you use a workstation connected by a cable, ask LDC to fix the IP address for your port number. <strong>Communicate this IP address to LUNARC the same way</strong>.</p>
+<p>As a further layer of security we employ IP address filtering to make sure only authorised users can establish a connection to COSMOS-SENS. While your LUNARC account is being created, contact LDC (servicedesk@lu.se) and request a VPN with a static IP address. When you receive your IP address, ask the project leader to raise a support ticket (support@lunarc.lu.se) with LUNARC stating what the IP address is, and who it is for. If you use a workstation connected by a cable, ask LDC to fix the IP address for your port number. <strong>Communicate this IP address to LUNARC the same way</strong>.</p>
 <h3 id="4-sign-the-agreement">4) Sign the agreement</h3>
 <p><strong>LUNARC will send you a digital agreement that you will need sign via EduSign</strong>. Both you and the project leader will need to do this. Someone from LUNARC will contact you with details on how you create your password.</p>
 <h3 id="5-setup-2fa">5) Setup 2FA</h3>
@@ -216,7 +216,7 @@
 <p><strong>To be clear, all files in this mounted folder are located on COSMOS-SENS</strong>. When you unmount <code>ToCSENS</code> that folder will be empty again. </p>
 <div class="admonition warning inline end">
 <p class="admonition-title">Be smart</p>
-<p>The point of COSMOS-SENS is to protect sensitive data, so be mindful about which folders you mount locally. For example, mounting <code>/home/&lt;user&gt;</code> would expose <strong>eveything</strong> you have in your home folder to your local machine. If a bad actor were to try something malicious on your local computer, they would also have access to everything you have on COSMOS-SENS. Also, everything in your <code>/home</code> would also be exposed to any mistakes you make on you local machine.</p>
+<p>The point of COSMOS-SENS is to protect sensitive data, so be mindful about which folders you mount locally. For example, mounting <code>/home/&lt;user&gt;</code> would expose <strong>everything</strong> you have in your home folder to your local machine. If a bad actor were to try something malicious on your local computer, they would also have access to everything you have on COSMOS-SENS. Also, everything in your <code>/home</code> would also be exposed to any mistakes you make on you local machine.</p>
 <p>Mount specific folders rather than absolutely everything. Better safe than sorry.</p>
 </div>
 <h2 id="cut-paste">Cut &amp; Paste</h2>
@@ -345,35 +345,38 @@ bowtie2 &lt;rest of the command here&gt;
 --outFileNamePrefix $SNIC_TMP/out/MyAnalysis_
 cp $SNIC_TMP/out/MyAnalysis_* /home/&lt;userid&gt;/pathtofinaldestination/
 </code></pre>
-<p>So in this case, the output is directed to the <strong>local</strong> disk at <code>$SNIC_TMP/out/MyAnanlysis_</code>, and once mapping is complete the results are copied from there to your main storage in <code>home</code>.</p>
+<p>So in this case, the output is directed to the <strong>local</strong> disk at <code>$SNIC_TMP/out/MyAnalysis_</code>, and once mapping is complete the results are copied from there to your main storage in <code>home</code>.</p>
 <h2 id="be-nice-to-fellow-co-workers">Be nice to fellow co-workers</h2>
 <p>Compute resources are sometimes limited, therefore try to use only the resources as you actually need for your jobs. Make sure you read the documents of the software you are using, and whether it can actually handle multi-core processes. There is no point in asking for 10 cores if your software cannot handle it.</p>
 <h2 id="reproducible-research">Reproducible research</h2>
-<p><strong>Never update packages in the middle of a project!</strong>. There is always a chance underlying methods change that may cause a change in the results. The best thing you can do is "freeze" your packages buy putting eveything into a Apptainer (new name for Singularity) container/environment that you can use knowing that all package version are the same. Apptainer containers are also great for getting software onto COSMOS-SENS without needing LUNARC support to do an install. You can read more about <a href="https://apptainer.org/docs/user/main/quick_start.html">Apptainer images here</a>. Apptainer is installed on COSMOS-SENS and no modules are needed to load it.</p>
-<p>Apptainer images are very useful for packaging together workflows that require several programs to run one after another. Post-publiction, these images can be included in the supporting material of your paper so others in your community can download it and apply it on their own data.</p>
+<p><strong>Never update packages in the middle of a project!</strong>. There is always a chance underlying methods change that may cause a change in the results. The best thing you can do is "freeze" your packages buy putting everything into a Apptainer (new name for Singularity) container/environment that you can use knowing that all package version are the same. Apptainer containers are also great for getting software onto COSMOS-SENS without needing LUNARC support to do an install. You can read more about <a href="https://apptainer.org/docs/user/main/quick_start.html">Apptainer images here</a>. Apptainer is installed on COSMOS-SENS and no modules are needed to load it.</p>
+<p>Apptainer images are very useful for packaging together workflows that require several programs to run one after another. Post-publication, these images can be included in the supporting material of your paper so others in your community can download it and apply it on their own data.</p>
 <h2 id="cosmos-sens-and-bioinformatics">COSMOS-SENS and bioinformatics</h2>
 <p>The majority of users on COSMOS-SENS are bioinformaticians processing human sequence data. There are tools that people would like to use in a secure setting, so we will go through a few here.</p>
 <h2 id="nf-core">nf-core</h2>
 <p><strong>Note: this document has been updated to show how to run pipelines using Nexflow v24</strong>. The previous document gave instructions for v23.</p>
-<p>Nextflow and the <a href="https://nf-co.re/">NF-core modules</a> are a fantastic resource for bioinformaticians. There are a multitude of pipelines for various NGS applications which go into real depth regarding QC, mapping methods, annotatation, and reporting. After a pipline is run, you also get the version numbers of the software used for easy reporting in papers, but importantly, the pipeline remains the same everytime you run it ensuring results are comparable.</p>
-<p>When an nf-core pipline is initiated, singularity images are pulled over the internet for each component program. As COSMOS-SENS is a secure server with no internet connection, pipelines have to be downloaded and then transfered to COSMOS-SENS beforehand. In this case we are also downloading the required singularity images. If you require a pipeline that isn't there, please contact Petter to have it downloaded and installed. It is far better we have them in one place for all to use, rather than duplicating them all over the system.</p>
+<p>Nextflow and the <a href="https://nf-co.re/">nf-core pipelines</a> are a fantastic resource for bioinformaticians. There are a multitude of workflows for various NGS applications which go into real depth regarding QC, mapping methods, annotation, and reporting. After a pipeline is run, you also get the version numbers of the software used for easy reporting in papers, but importantly, the pipeline remains the same every time you run it ensuring results are comparable.</p>
+<p>When an nf-core pipeline is initiated, singularity images are pulled at runtime over the internet for each component program. As COSMOS-SENS is a secure server with no internet connection, pipelines and images have to be downloaded and then transferred to COSMOS-SENS beforehand.</p>
+<h2 id="getting-an-nf-core-pipeline">Getting an nf-core pipeline</h2>
+<p>Read the nf-core docs, but to download a pipeline you need to install <code>nf-core</code> and then use <code>nf-core tools download</code> to begin the process of downloading a pipeline. You will need to download the singularity images when the option comes up. To make the pipelines available for all your project members, a good place to put them would be the shared area, for example <code>/scale/grXX/shared/nf-core/</code>. When you download pipelines, make a folder called <code>singularity_cache</code> where the images are downloaded to. Use "copy" when the choice of "copy/amend" comes up during download process.</p>
 <h3 id="setting-up-to-use-nf-core">Setting up to use nf-core</h3>
-<p>There are several commonly used piplines located at <code>/scale/gr01/shared/nf-core</code>, and to use them you need to add a few lines into a file called <code>.bash_profile</code>.</p>
+<p>To use them, you need to add a few lines into a file called <code>.bash_profile</code> which is in your home folder.</p>
 <p>1) Open the file using <code>gedit ~/.bash_profile</code></p>
-<p>2) Add copy/paste these lines in at the end and save the file:</p>
+<p>2) Add these lines at the end, and then save the file:</p>
 <pre><code>export NXF_OFFLINE='true'
 export SINGULARITY_TMPDIR=$SNIC_TMP
-export NXF_SINGULARITY_LIBRARYDIR=/scale/gr01/shared/nf-core/singularity_cache
+export NXF_SINGULARITY_LIBRARYDIR=/scale/grXX/shared/nf-core/singularity_cache
 export NXF_SINGULARITY_CACHEDIR=&quot;$NXF_SINGULARITY_LIBRARYDIR&quot;
 export SINGULARITY_CACHEDIR=&quot;$NXF_SINGULARITY_LIBRARYDIR&quot;
-export NXF_HOME=/scale/gr01/shared/nf-core/nextflow_sub/
+export NXF_HOME=/scale/grXX/shared/nf-core/nextflow_sub/
 export NXF_SINGULARITY_HOME_MOUNT=true
 </code></pre>
+<p><strong>Make sure you change the paths/name according to your project.</strong></p>
 <p><strong>You should then logout of COSMOS-SENS and log back in so these changes take effect</strong>. These lines set the environment variables that</p>
 <p>1) Tells Nextflow where the singularity images are located (<code>/scale/gr01/shared/nf-core/singularity_cache</code>)</p>
 <p>2) Set the temp dir to the ones located on the nodes (<code>$SNIC_TMP</code>).</p>
-<p>3) Binds the sigularity images to <code>/scale</code> so they can be found system wide.</p>
-<p>4) Sets the <code>home</code> of Nextflow to the central copy on shared (<code>/scale/gr01/shared/nf-core/nextflow_sub/</code>). This means each user doesn't need their own.</p>
+<p>3) Binds the singularity images to <code>/scale</code> so they can be found system wide.</p>
+<p>4) Sets the <code>home</code> of Nextflow to the central copy on shared (<code>/scale/grXX/shared/nf-core/nextflow_sub/</code>). This means each user doesn't need their own.</p>
 <p>When running a job, use the config file located here:</p>
 <p><code>/scale/gr01/shared/nf-core/cosmo_sens_grp1_NFv24.config</code></p>
 <p>This file contains the project ID and automatically sets the RAM and core resources so you don't have to.</p>
@@ -387,10 +390,10 @@ Sample3,Sample3_R1.fastq.gz,Sample3_R2.fastq.gz,auto
 <p>and a script <code>NFC_RNAseq.sh</code> running the basic rnaseq pipline would look like this:</p>
 <pre><code class="language-shell">module load Nextflow/24.10.0
 
-nextflow run /scale/gr01/shared/nf-core/nf-core-rnaseq_3.17.0/3_17_0/main.nf \
+nextflow run /scale/grXX/shared/nf-core/nf-core-rnaseq_3.17.0/3_17_0/main.nf \
 -profile singularity \
 --input samplesheet.csv \
--c /scale/gr01/shared/nf-core/cosmos_sens_grp1_NFv24.config \
+-c /scale/grXX/shared/nf-core/cosmos_sens_grp1_NFv24.config \
 --genome GRCm38 \
 --igenomes_base  /scale/references/AWS-iGenomes/ \
 --outdir /home/&lt;userid&gt;/RNAseq_project/NFC_out
@@ -440,26 +443,6 @@ nextflow run /scale/gr01/shared/nf-core/nf-core-rnaseq_3.17.0/3_17_0/main.nf \
 
 </code></pre>
 <p>This will run the entire pipeline on a single node.</p>
-<h2 id="igv">IGV</h2>
-<p>Integrative Genomics Viewer (IGV) is a nice tool to visualise BAM/bigwig files. This is available to use on COSMOS-SENS, but it should not be used on the front-end as it will slow the system down for others. Instead you should login to a node interactively and use it from there.</p>
-<p>Open a terminal and do the following. It will take a moment to find a free node. <code>-t 60</code> means a 60 min session</p>
-<pre><code class="language-shell">interactive -N 1 --ntasks-per-node=4 -t 60
-</code></pre>
-<p>When you have logged into a node, your prompt will change to something like:</p>
-<pre><code>&lt;userid&gt;@snXX
-</code></pre>
-<p>where snXX will denote which node you have logged into.</p>
-<p>Load the module:</p>
-<pre><code class="language-shell">module load IGV/2.18.4-Java-17
-</code></pre>
-<p>You will see this:</p>
-<pre><code>WARNING!! Not suitable to be exectuted on COSMOS-SENS front-ends.
-</code></pre>
-<p><strong>You can ignore this</strong>. You are logged into a node because you were smart enough to read these instructions first. Well done you.</p>
-<p>Then invoke IGV:</p>
-<pre><code class="language-shell">igv.sh
-</code></pre>
-<p>A normal IGV session will open which you use as normal.</p>
 <h2 id="apptainer-singularity-containers">Apptainer (Singularity) containers</h2>
 <p>Software can be packaged into Apptainer containers that provide a complete analysis environment that can be copied over to COSMOS-SENS and be used there. This means you get exactly what you need, and also reduces the workload on the good people at LUNARC. <em>This is also an excellent way of practicing reproducible research</em>. A project can be done using an immutable Apptainer image, so if you need to go back to the project in <em>X</em> years time, you have the original software setup you had when you first did it. If you upgrade a piece of software in your image, you can make a new version of it so the previous version still exists in the original state.</p>
 <p>It's easier to make an image on a Linux system if you are going to use it on COSMOS-SENS. If you use a Mac, your best bet is to use open COSMOS to make the image which you can copy to COSMOS-SENS.</p>
@@ -571,5 +554,5 @@ From: alpine:latest  # Use the latest Alpine Linux image as the base
 
 <!--
 MkDocs version : 1.3.0
-Build Date UTC : 2026-08-21 12:14:42.428194+00:00
+Build Date UTC : 2026-08-21 12:46:06.170884+00:00
 -->
